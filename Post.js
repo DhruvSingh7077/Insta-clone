@@ -9,14 +9,20 @@ const PostSchema = new mongoose.Schema(
     },
     image: {
       type: String, // image URL or filename
-      required: true,
+    },
+    video: {
+      type: String, // video URL for reels
+    },
+    isReel: {
+      type: Boolean,
+      default: false, // true if this is a reel (video post)
     },
     caption: {
       type: String,
       maxLength: 500,
     },
     likes: {
-      type: [String], // array of userIds who liked
+      type: [String], // array of userIds who liked the post
       default: [],
     },
     comments: [
@@ -35,5 +41,13 @@ const PostSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Validation: either image or video must be present
+PostSchema.pre("save", function (next) {
+  if (!this.image && !this.video) {
+    return next(new Error("Post must contain either an image or a video."));
+  }
+  next();
+});
 
 module.exports = mongoose.model("Post", PostSchema);
