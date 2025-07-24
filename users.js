@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const verifyToken = require("../middleware/verifyToken");
+
 
 // GET user by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id",  async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password"); // Exclude password
     if (!user) return res.status(404).json("User not found");
@@ -14,9 +16,10 @@ router.get("/:id", async (req, res) => {
 });
 
 // UPDATE user
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
+   if (req.user.id !== req.params.id)
+    return res.status(403).json("You can update only your own account");
   try {
-    // Optional: Only allow user to update their own account (auth check should be added in real apps)
 
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
