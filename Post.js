@@ -21,10 +21,10 @@ const PostSchema = new mongoose.Schema(
       type: String,
       maxLength: 500,
     },
-    likes: {
-      type: [String], // array of userIds who liked the post
-      default: [],
-    },
+   likes: [{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User"
+}],
     comments: [
       {
         userId: {
