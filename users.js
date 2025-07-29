@@ -48,4 +48,30 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// TOGGLE bookmark (save/unsave a post)
+router.put("/bookmark/:postId", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const { postId } = req.params;
+
+    if (!user.bookmarks) user.bookmarks = [];
+
+    const index = user.bookmarks.indexOf(postId);
+
+    if (index > -1) {
+      // Post is already bookmarked → remove
+      user.bookmarks.splice(index, 1);
+    } else {
+      // Add bookmark
+      user.bookmarks.push(postId);
+    }
+
+    await user.save();
+    res.status(200).json({ message: "Bookmark toggled", bookmarks: user.bookmarks });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to toggle bookmark", err });
+  }
+});
+
+
 module.exports = router;

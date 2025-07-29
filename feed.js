@@ -69,4 +69,49 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+// LIKE or UNLIKE a post
+router.put("/:id/like", verifyToken, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json("Post not found");
+
+    const userId = req.user.id;
+
+    if (post.likes.includes(userId)) {
+      // Unlike
+      post.likes.pull(userId);
+    } else {
+      // Like
+      post.likes.push(userId);
+    }
+
+    await post.save();
+    res.status(200).json({ message: "Post liked/unliked", likes: post.likes });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to toggle like", err });
+  }
+});
+
+// COMMENT on a post
+router.post("/:id/comment", verifyToken, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json("Post not found");
+
+    const comment = {
+      userId: req.user.id,
+      text: req.body.text,
+      createdAt: new Date(),
+    };
+
+    post.comments.push(comment);
+    await post.save();
+
+    res.status(201).json({ message: "Comment added", comments: post.comments });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to comment", err });
+  }
+});
+
+
 module.exports = router;

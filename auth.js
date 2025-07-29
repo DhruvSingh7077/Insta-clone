@@ -3,6 +3,11 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+// ✅ TEST ROUTE
+router.get("/test", (req, res) => {
+  res.json({ message: "Auth route is working!" });
+});
+
 // REGISTER
 router.post("/register", async (req, res) => {
   try {
@@ -35,7 +40,7 @@ router.post("/login", async (req, res) => {
     if (!validPassword) return res.status(400).json("Invalid password");
 
     // create and send JWT token
-    const token = jwt.sign({ id: user._id }, "process.env.JWT_SECRET", { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
     res.status(200).json({ token, user });
   } catch (err) {
