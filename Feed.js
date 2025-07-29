@@ -1,21 +1,43 @@
-// src/components/Feed.js
-import React from 'react';
-import Post from './post';
 
-const dummyPosts = [
-  {
-    user: { name: 'john_doe', avatar: 'https://i.pravatar.cc/40?img=1' },
-    image: 'https://source.unsplash.com/random/600x400?nature',
-    caption: 'Beautiful view from the mountains!',
-  },
-  {
-    user: { name: 'jane_smith', avatar: 'https://i.pravatar.cc/40?img=2' },
-    image: 'https://source.unsplash.com/random/600x400?beach',
-    caption: 'Chilling by the beach 🏖️',
-  },
-];
+import React, { useEffect, useState, useContext } from "react";
+import Post from './post';
+import { AuthContext } from "../context/AuthContext";
+
 
 const Feed = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+   
+  const { token } = useContext(AuthContext); // for protected routes
+
+    useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/posts/all", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` // include only if required
+          }
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch posts");
+
+        const data = await res.json();
+        setPosts(data);
+           } catch (err) {
+        console.error(err);
+        setError("Could not load feed.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    
+    fetchPosts();
+  }, [token]);
+
+
   return (
     <div className="pt-4 px-2">
       {/* Stories */}
@@ -34,9 +56,18 @@ const Feed = () => {
         ))}
       </div>
 
-      {/* Posts */}
-      {dummyPosts.map((post, i) => (
-        <Post key={i} {...post} />
+       {/* Posts Section */}
+      {loading && <p>Loading feed...</p>}
+      {error && <p className="text-danger">{error}</p>}
+      {!loading && posts.length === 0 && <p>No posts found.</p>}
+
+      {posts.map((post) => (
+        <Post
+          key={post._id}
+          user={{ name: post.userId || "unknown", avatar: "https://i.pravatar.cc/40" }}
+          image={post.image}
+          caption={post.caption}
+        />
       ))}
     </div>
   );
