@@ -1,8 +1,21 @@
 // src/components/LeftSidebar.js
-import React from 'react';
+
+import React, { useContext } from 'react';
+
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const LeftSidebar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+   const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+
   return (
     <div className="d-flex flex-column align-items-start px-3 pt-4" style={{ minHeight: '100vh' }}>
       <h4 className="mb-4">Instagram</h4>
@@ -54,6 +67,21 @@ const LeftSidebar = () => {
           </a>
         </li>
       </ul>
+      
+       {/* 🔐 Auth Actions */}
+      <div style={{ marginTop: "20px" }}>
+        {user ? (
+          <>
+            <p className="text-white mb-2">Welcome, {user.username}</p>
+            <button className="btn btn-danger btn-sm" onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="text-white me-2">Sign In</Link> |{" "}
+            <Link to="/register" className="text-white ms-2">Register</Link>
+          </>
+        )}
+      </div>
     </div>
   );
 };
