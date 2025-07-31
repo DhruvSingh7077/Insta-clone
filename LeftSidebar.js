@@ -1,6 +1,6 @@
 // src/components/LeftSidebar.js
 
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from "react-router-dom";
@@ -9,11 +9,24 @@ import { AuthContext } from "../context/AuthContext";
 const LeftSidebar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef();
 
    const handleLogout = () => {
     logout();
     navigate("/login");
   };
+
+  // Close dropdown if clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
 
   return (
@@ -61,10 +74,31 @@ const LeftSidebar = () => {
             <i className="bi bi-person me-3"></i> Profile
           </a>
         </li>
-        <li className="nav-item mt-auto">
-          <a className="nav-link text-white d-flex align-items-center" href="/">
+    
+    {/* More Button */}
+        <li className="nav-item mt-auto position-relative" ref={dropdownRef}>
+          <button
+            className="nav-link text-white d-flex align-items-center bg-transparent border-0"
+            onClick={() => setShowDropdown((prev) => !prev)}
+          >
+            
             <i className="bi bi-list me-3"></i> More
-          </a>
+          </button>
+
+  {/* Dropdown Menu */}
+          {showDropdown && (
+            <div className="bg-dark text-white rounded p-2 position-absolute" style={{ zIndex: 1000, left: '100%', bottom: 0, width: '200px' }}>
+              <div className="dropdown-item text-white py-1"><i className="bi bi-gear me-2"></i> Settings</div>
+              <div className="dropdown-item text-white py-1"><i className="bi bi-clock-history me-2"></i> Your activity</div>
+              <div className="dropdown-item text-white py-1"><i className="bi bi-bookmark me-2"></i> Saved</div>
+              <div className="dropdown-item text-white py-1"><i className="bi bi-moon me-2"></i> Switch appearance</div>
+              <div className="dropdown-item text-white py-1"><i className="bi bi-flag me-2"></i> Report a problem</div>
+              <hr className="bg-secondary my-2" />
+              <div className="dropdown-item text-white py-1"><i className="bi bi-chat-dots me-2"></i> Threads</div>
+              <div className="dropdown-item text-white py-1">Switch accounts</div>
+              <div className="dropdown-item text-danger py-1" onClick={handleLogout}><i className="bi bi-box-arrow-right me-2"></i> Log out</div>
+            </div>
+          )}
         </li>
       </ul>
       

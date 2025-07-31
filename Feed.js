@@ -56,18 +56,14 @@ const Feed = () => {
         ))}
       </div>
 
-       {/* Posts Section */}
+       
+      {/* Posts Section */}
       {loading && <p>Loading feed...</p>}
       {error && <p className="text-danger">{error}</p>}
       {!loading && posts.length === 0 && <p>No posts found.</p>}
 
       {posts.map((post) => (
-        <Post
-          key={post._id}
-          user={{ name: post.userId || "unknown", avatar: "https://i.pravatar.cc/40" }}
-          image={post.image}
-          caption={post.caption}
-        />
+        <Post key={post._id} post={post} />
       ))}
     </div>
   );
