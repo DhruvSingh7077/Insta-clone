@@ -1,9 +1,11 @@
 // src/pages/ProfilePage.js
-
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Button } from "react-bootstrap";
-import "./ProfilePage.css"; // Optional: for your own styles
+//import Button from 'react-bootstrap/Button';
+//import "./ProfilePage.css"; // Optional: for your own styles
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const ProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -25,11 +27,11 @@ const ProfilePage = () => {
         <div>
           <h4 className="mb-2">{user?.username || "username"}</h4>
           <div className="d-flex gap-2 mb-2">
-            <Button variant="outline-secondary" size="sm">Edit profile</Button>
-            <Button variant="outline-secondary" size="sm">View archive</Button>
-            <Button variant="outline-secondary" size="sm">
+            <button className="btn btn-outline-secondary btn-sm">Edit profile</button>
+            <button className="btn btn-outline-secondary btn-sm">View archive</button>
+            <button className="btn btn-outline-secondary btn-sm">
               <i className="bi bi-gear"></i>
-            </Button>
+            </button>
           </div>
 
           <div className="d-flex gap-4">
@@ -81,9 +83,9 @@ const ProfilePage = () => {
 
       {/* Floating Message Button */}
       <div className="position-fixed bottom-0 end-0 m-4">
-        <Button variant="light" className="shadow d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
+       <button className="btn btn-light shadow d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
           <i className="bi bi-messenger"></i> Messages
-        </Button>
+        </button>
       </div>
     </div>
   );
