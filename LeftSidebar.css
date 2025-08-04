@@ -1,0 +1,53 @@
+/* LeftSidebar.css */
+
+.sidebar-dropdown {
+  bottom: calc(100% + 10px); /* 👈 Show above the button */
+  left: 50%; /* 👈 Center horizontally */
+  transform: translateX(-50%);
+  width: 220px;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+}
+
+.dropdown-item-custom {
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-item-custom:hover {
+  background-color: #2c2c2c;
+}
+
+/* for create button */
+/* Custom dropdown positioning */
+.dropdown-menu-custom {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 150px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 0.5rem 0;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Dropdown item look */
+.dropdown-menu-custom .dropdown-item {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-menu-custom .dropdown-item:hover {
+  background-color: #f2f2f2;
+}
+
