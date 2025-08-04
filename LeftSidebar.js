@@ -2,17 +2,18 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import './LeftSidebar.css'; // Make sure this CSS file exists
+import './LeftSidebar.css';
 
 const LeftSidebar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
-   const [showAppearanceMenu, setShowAppearanceMenu] = useState(false);
+  const [showAppearanceMenu, setShowAppearanceMenu] = useState(false);
+
   const moreDropdownRef = useRef();
   const createDropdownRef = useRef();
-    const appearanceMenuRef = useRef();
+  const appearanceMenuRef = useRef();
 
   const handleLogout = () => {
     logout();
@@ -21,7 +22,7 @@ const LeftSidebar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-         if (
+      if (
         !moreDropdownRef.current?.contains(event.target) &&
         !createDropdownRef.current?.contains(event.target) &&
         !appearanceMenuRef.current?.contains(event.target)
@@ -35,25 +36,23 @@ const LeftSidebar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-   const toggleDarkMode = () => {
+  const toggleDarkMode = () => {
     document.body.classList.toggle("dark");
     localStorage.setItem("darkMode", document.body.classList.contains("dark"));
   };
 
-    useEffect(() => {
+  useEffect(() => {
     const darkPref = localStorage.getItem("darkMode") === "true";
     if (darkPref) {
       document.body.classList.add("dark");
     }
   }, []);
 
-
   return (
     <div className="d-flex flex-column align-items-start px-3 pt-4" style={{ minHeight: '100vh' }}>
       <h4 className="mb-4">Instagram</h4>
 
       <ul className="nav flex-column w-100">
-        {/* Sidebar Links */}
         <li className="nav-item mb-3">
           <Link to="/" className="nav-link text-white d-flex align-items-center">
             <i className="bi bi-house-door me-3"></i> Home
@@ -125,13 +124,13 @@ const LeftSidebar = () => {
           </Link>
         </li>
 
-           {/* More Dropdown */}
+        {/* More Dropdown */}
         <li className="nav-item mt-auto position-relative" ref={moreDropdownRef}>
           <button
             className="nav-link text-white d-flex align-items-center bg-transparent border-0"
             onClick={() => {
-              setShowMoreDropdown((prev) => !prev);
-              setShowAppearanceMenu(false); // hide appearance menu on toggle
+              setShowMoreDropdown(prev => !prev);
+              setShowAppearanceMenu(false);
             }}
           >
             <i className="bi bi-list me-3"></i> More
@@ -139,74 +138,78 @@ const LeftSidebar = () => {
 
           {showMoreDropdown && (
             <div className="bg-dark text-white rounded p-2 position-absolute sidebar-dropdown">
-              {[
-                { icon: "gear", label: "Settings" },
-                { icon: "clock-history", label: "Your activity" },
-                { icon: "bookmark", label: "Saved" },
-                {
-                  icon: "moon",
-                  label: "Switch appearance",
-                  onClick: () => {
-                    setShowAppearanceMenu((prev) => !prev);
-                  },
-                },
-                { icon: "flag", label: "Report a problem" },
-                "divider",
-                { icon: "chat-dots", label: "Threads" },
-                { label: "Switch accounts" },
+              <div className="dropdown-item-custom text-white">
+                <i className="bi bi-gear me-2"></i> Settings
+              </div>
+              <div className="dropdown-item-custom text-white">
+                <i className="bi bi-clock-history me-2"></i> Your activity
+              </div>
+              <div className="dropdown-item-custom text-white">
+                <i className="bi bi-bookmark me-2"></i> Saved
+              </div>
 
-                { icon: "box-arrow-right", label: "Log out", danger: true, onClick: handleLogout }
-              ].map((item, i) =>
-                item === "divider" ? (
-                  <hr className="bg-secondary my-2" key={i} />
-                ) : (
+              {/* Switch Appearance Item with Submenu */}
+              <div className="position-relative">
+                <div
+                  className="dropdown-item-custom text-white"
+                  onClick={() => setShowAppearanceMenu(prev => !prev)}
+                >
+                  <i className="bi bi-moon me-2"></i> Switch appearance
+                </div>
+
+                {showAppearanceMenu && (
                   <div
-                    key={i}
-                    className={`dropdown-item-custom ${item.danger ? "text-danger" : "text-white"}`}
-                    onClick={item.onClick}
+                    ref={appearanceMenuRef}
+                    className="bg-dark text-white rounded p-3 position-absolute start-100 top-0 ms-2 shadow"
+                    style={{ zIndex: 1050 }}
                   >
-                    {item.icon && <i className={`bi bi-${item.icon} me-2`}></i>}
-                    {item.label}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <span>Switch appearance</span>
+                      <i className="bi bi-moon"></i>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <span>Dark mode</span>
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="darkModeSwitch"
+                          checked={document.body.classList.contains("dark")}
+                          onChange={toggleDarkMode}
+                        />
+                      </div>
+                    </div>
                   </div>
-                )
-              )}
+                )}
+              </div>
+
+              <div className="dropdown-item-custom text-white">
+                <i className="bi bi-flag me-2"></i> Report a problem
+              </div>
+              <hr className="bg-secondary my-2" />
+              <div className="dropdown-item-custom text-white">
+                <i className="bi bi-chat-dots me-2"></i> Threads
+              </div>
+              <div className="dropdown-item-custom text-white">Switch accounts</div>
+              <div
+                className="dropdown-item-custom text-danger"
+                onClick={handleLogout}
+              >
+                <i className="bi bi-box-arrow-right me-2"></i> Log out
+              </div>
             </div>
           )}
         </li>
       </ul>
 
-  {/* Switch Appearance Submenu */}
-      {showAppearanceMenu && (
-        <div
-          ref={appearanceMenuRef}
-          className="bg-dark text-white rounded p-3 position-absolute start-100 top-50 translate-middle-y ms-2 shadow"
-          style={{ zIndex: 1050 }}
-        >
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <span>Switch appearance</span>
-            <i className="bi bi-moon"></i>
-          </div>
-          <div className="d-flex justify-content-between align-items-center">
-            <span>Dark mode</span>
-            <div className="form-check form-switch">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="darkModeSwitch"
-                checked={document.body.classList.contains("dark")}
-                onChange={toggleDarkMode}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-      
       {/* Auth Info */}
       <div style={{ marginTop: "20px" }}>
         {user ? (
           <>
             <p className="text-white mb-2">Welcome, {user.username}</p>
-            <button className="btn btn-danger btn-sm" onClick={handleLogout}>Logout</button>
+            <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+              Logout
+            </button>
           </>
         ) : (
           <>
