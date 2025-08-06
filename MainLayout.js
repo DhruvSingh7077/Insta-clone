@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LeftSidebar from './LeftSidebar';
 import RightSidebar from './RightSidebar';
+import ActivityPanel from './ActivityPanel';
 import { useLocation } from 'react-router-dom';
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
+    const [showActivityPanel, setShowActivityPanel] = useState(false);
 
   // Show RightSidebar only on certain paths
   const showRightSidebar = location.pathname === '/';
@@ -14,16 +16,21 @@ const MainLayout = ({ children }) => {
       <div className="row">
         {/* Left Sidebar (Always) */}
         <div className="col-2 bg-dark text-white">
-          <LeftSidebar />
+           <LeftSidebar onShowActivityPanel={() => setShowActivityPanel(true)} />
         </div>
 
-        {/* Main Content */}
+       {/* Main Content */}
         <div className={showRightSidebar ? "col-7" : "col-10"}>
-          {children}
+          {showActivityPanel ? (
+            <ActivityPanel onClose={() => setShowActivityPanel(false)} />
+          ) : (
+            children
+          )}
         </div>
 
         {/* Optional Right Sidebar */}
-        {showRightSidebar && (
+         {/* Right Sidebar (only when not showing ActivityPanel) */}
+        {showRightSidebar && !showActivityPanel && (
           <div className="col-3">
             <RightSidebar />
           </div>
