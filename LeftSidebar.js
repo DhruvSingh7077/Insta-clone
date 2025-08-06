@@ -3,13 +3,16 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import './LeftSidebar.css';
+//import ActivityPanel from './ActivityPanel';
 
-const LeftSidebar = () => {
+
+const LeftSidebar = ({ onShowActivityPanel }) => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
   const [showAppearanceMenu, setShowAppearanceMenu] = useState(false);
+  //const [showActivityPanel, setShowActivityPanel] = useState(false);
 
   const moreDropdownRef = useRef();
   const createDropdownRef = useRef();
@@ -141,9 +144,16 @@ const LeftSidebar = () => {
               <div className="dropdown-item-custom text-white">
                 <i className="bi bi-gear me-2"></i> Settings
               </div>
-              <div className="dropdown-item-custom text-white">
+ <div
+                   className="dropdown-item-custom text-white"
+                onClick={() => {
+                  onShowActivityPanel(); // 🔹 Call parent to show ActivityPanel
+                  setShowMoreDropdown(false);
+                }}
+              >
                 <i className="bi bi-clock-history me-2"></i> Your activity
               </div>
+
               <div className="dropdown-item-custom text-white">
                 <i className="bi bi-bookmark me-2"></i> Saved
               </div>
@@ -218,6 +228,8 @@ const LeftSidebar = () => {
           </>
         )}
       </div>
+
+
     </div>
   );
 };
