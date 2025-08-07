@@ -6,9 +6,8 @@ import { useLocation } from 'react-router-dom';
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
-    const [showActivityPanel, setShowActivityPanel] = useState(false);
+  const [showActivityPanel, setShowActivityPanel] = useState(false);
 
-  // Show RightSidebar only on certain paths
   const showRightSidebar = location.pathname === '/';
 
   return (
@@ -16,26 +15,26 @@ const MainLayout = ({ children }) => {
       <div className="row">
         {/* Left Sidebar (Always) */}
         <div className="col-2 bg-dark text-white">
-           <LeftSidebar onShowActivityPanel={() => setShowActivityPanel(true)} />
+          <LeftSidebar onShowActivityPanel={() => setShowActivityPanel(true)} />
         </div>
 
-       {/* Main Content */}
-        <div className={showRightSidebar ? "col-7" : "col-10"}>
-          {showActivityPanel ? (
-            <ActivityPanel onClose={() => setShowActivityPanel(false)} />
-          ) : (
-            children
-          )}
+        {/* Main Content */}
+        <div className={showRightSidebar ? 'col-7' : 'col-10'}>
+          {children}
         </div>
 
-        {/* Optional Right Sidebar */}
-         {/* Right Sidebar (only when not showing ActivityPanel) */}
+        {/* Right Sidebar (only if ActivityPanel is not open) */}
         {showRightSidebar && !showActivityPanel && (
           <div className="col-3">
             <RightSidebar />
           </div>
         )}
       </div>
+
+      {/* Activity Panel overlays everything except the left sidebar */}
+      {showActivityPanel && (
+        <ActivityPanel onClose={() => setShowActivityPanel(false)} isOpen={showActivityPanel} />
+      )}
     </div>
   );
 };
