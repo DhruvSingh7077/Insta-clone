@@ -3,10 +3,12 @@ import LeftSidebar from './LeftSidebar';
 import RightSidebar from './RightSidebar';
 import ActivityPanel from './ActivityPanel';
 import { useLocation } from 'react-router-dom';
+import SearchPanel from './SearchPanel';
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
   const [showActivityPanel, setShowActivityPanel] = useState(false);
+   const [showSearchPanel, setShowSearchPanel] = useState(false);
 
   const showRightSidebar = location.pathname === '/';
 
@@ -15,12 +17,18 @@ const MainLayout = ({ children }) => {
       <div className="row">
         {/* Left Sidebar (Always) */}
         <div className="col-2 bg-dark text-white">
-          <LeftSidebar onShowActivityPanel={() => setShowActivityPanel(true)} />
+          <LeftSidebar onShowActivityPanel={() => setShowActivityPanel(true)}
+              onShowSearchPanel={() => setShowSearchPanel(true)}
+          />
         </div>
 
-        {/* Main Content */}
-        <div className={showRightSidebar ? 'col-7' : 'col-10'}>
-          {children}
+       {/* Middle Section */}
+        <div className={showRightSidebar ? "col-7" : "col-10"}>
+          {showActivityPanel ? (
+            <ActivityPanel onClose={() => setShowActivityPanel(false)} />
+          ) : (
+            children
+          )}
         </div>
 
         {/* Right Sidebar (only if ActivityPanel is not open) */}
@@ -29,12 +37,19 @@ const MainLayout = ({ children }) => {
             <RightSidebar />
           </div>
         )}
-      </div>
+      {/* Panels */}
+        {showActivityPanel && (
+          <div className={showRightSidebar ? 'col-10' : 'col-10'}>
+            <ActivityPanel onClose={() => setShowActivityPanel(false)} isOpen />
+          </div>
+        )}
 
-      {/* Activity Panel overlays everything except the left sidebar */}
-      {showActivityPanel && (
-        <ActivityPanel onClose={() => setShowActivityPanel(false)} isOpen={showActivityPanel} />
-      )}
+        {showSearchPanel && (
+          <div className={showRightSidebar ? 'col-5' : 'col-10'}>
+            <SearchPanel onClose={() => setShowSearchPanel(false)} isOpen />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
