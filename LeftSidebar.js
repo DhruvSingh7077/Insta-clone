@@ -6,7 +6,7 @@ import './LeftSidebar.css';
 //import ActivityPanel from './ActivityPanel';
 
 
-const LeftSidebar = ({ onShowActivityPanel }) => {
+const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel }) => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
@@ -62,10 +62,16 @@ const LeftSidebar = ({ onShowActivityPanel }) => {
           </Link>
         </li>
 
+        {/* Search now opens SearchPanel */}
         <li className="nav-item mb-3">
-          <Link to="/search" className="nav-link text-white d-flex align-items-center">
+          <button
+            className="nav-link text-white d-flex align-items-center bg-transparent border-0 w-100"
+            onClick={() => {
+              onShowSearchPanel();
+            }}
+          >
             <i className="bi bi-search me-3"></i> Search
-          </Link>
+          </button>
         </li>
 
         <li className="nav-item mb-3">
