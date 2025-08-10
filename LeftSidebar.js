@@ -6,7 +6,7 @@ import './LeftSidebar.css';
 //import ActivityPanel from './ActivityPanel';
 
 
-const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel }) => {
+const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificationPanel }) => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
@@ -93,10 +93,14 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel }) => {
         </li>
 
         <li className="nav-item mb-3">
-          <Link to="/notifications" className="nav-link text-white d-flex align-items-center">
-            <i className="bi bi-heart me-3"></i> Notifications
-          </Link>
-        </li>
+  <button
+    className="nav-link text-white d-flex align-items-center bg-transparent border-0"
+    onClick={() => onShowNotificationPanel()}
+  >
+    <i className="bi bi-heart me-3"></i> Notifications
+  </button>
+</li>
+
 
         {/* Create Dropdown */}
         <li className="nav-item mb-3 position-relative" ref={createDropdownRef}>
