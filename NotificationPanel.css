@@ -1,0 +1,93 @@
+.notification-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 350px;
+  background-color: #000;
+  color: #fff;
+  border-left: 1px solid #333;
+  padding: 16px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+}
+
+.activity-section {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+.activity-section h4 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.activity-section p {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.suggested-section {
+  margin-top: 20px;
+}
+
+.suggested-section h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.suggested-user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.user-info {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.username {
+  font-weight: bold;
+  display: block;
+}
+
+.name {
+  font-size: 12px;
+  color: #bbb;
+}
+
+.suggested {
+  font-size: 11px;
+  color: #777;
+}
+
+.follow-btn {
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
