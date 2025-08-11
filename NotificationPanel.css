@@ -1,12 +1,12 @@
 .notification-panel {
   position: fixed;
-  right: 0;
+  left: 0; /* anchor to left */
   top: 0;
   height: 100%;
   width: 350px;
   background-color: #000;
   color: #fff;
-  border-left: 1px solid #333;
+  border-right: 1px solid #333; /* change border to right */
   padding: 16px;
   overflow-y: auto;
   z-index: 1000;
