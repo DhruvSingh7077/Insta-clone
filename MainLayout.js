@@ -5,12 +5,16 @@ import ActivityPanel from './ActivityPanel';
 import { useLocation } from 'react-router-dom';
 import SearchPanel from './SearchPanel';
 import NotificationPanel from './NotificationPanel';
+import ReportProblemModal from './ReportProblemModal';
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
+  
   const [showActivityPanel, setShowActivityPanel] = useState(false);
    const [showSearchPanel, setShowSearchPanel] = useState(false);
    const [showNotificationPanel, setShowNotificationPanel] = useState(false);
+   const [showReportModal, setShowReportModal] = useState(false);
+
 
   const showRightSidebar = location.pathname === '/';
 
@@ -22,6 +26,7 @@ const MainLayout = ({ children }) => {
           <LeftSidebar onShowActivityPanel={() => setShowActivityPanel(true)}
               onShowSearchPanel={() => setShowSearchPanel(true)}
                 onShowNotificationPanel={() => setShowNotificationPanel(true)}
+                 onShowReportModal={() => setShowReportModal(true)}
           />
         </div>
 
@@ -56,6 +61,11 @@ const MainLayout = ({ children }) => {
           </div>
         )}
       </div>
+
+           {/* Report Problem Modal */}
+      {showReportModal && (
+        <ReportProblemModal onClose={() => setShowReportModal(false)} />
+      )}
     </div>
   );
 };
