@@ -1,0 +1,71 @@
+.messages-container {
+  display: flex;
+  height: 100vh;
+  background-color: black;
+  color: white;
+}
+
+.messages-left {
+  width: 350px;
+  border-right: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.messages-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.search-input {
+  background-color: #121212;
+  border: none;
+  padding: 8px;
+  color: white;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.messages-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.request-link {
+  color: #0095f6;
+  cursor: pointer;
+}
+
+.no-messages {
+  margin-top: 20px;
+  color: gray;
+}
+
+.messages-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.messages-empty {
+  text-align: center;
+}
+
+.icon-circle {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.send-btn {
+  background-color: #0095f6;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
