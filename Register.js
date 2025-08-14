@@ -40,14 +40,50 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <input name="username" placeholder="Username" onChange={handleChange} />
-      <input name="email" placeholder="Email" onChange={handleChange} />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-      <button type="submit">Register</button>
+  <div className="container mt-5">
+    <h2>Register</h2>
+    <form onSubmit={handleSubmit} className="w-50">
+      <div className="mb-3">
+        <label className="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          className="form-control"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">Email</label>
+        <input
+          type="email"
+          name="email"
+          className="form-control"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          className="form-control"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <button type="submit" className="btn btn-primary">Register</button>
     </form>
-  );
+  </div>
+);
+
 };
 
 export default Register;

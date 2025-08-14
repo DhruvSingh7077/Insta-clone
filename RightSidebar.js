@@ -1,5 +1,8 @@
 // src/components/RightSidebar.js
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { ThemeContext } from '../context/ThemeContext';
+import { Link } from 'react-router-dom';
 
 const suggestions = [
   { username: 'elon_musk', avatar: 'https://i.pravatar.cc/40?img=11' },
@@ -9,10 +12,17 @@ const suggestions = [
 ];
 
 const RightSidebar = () => {
+  const { user } = useContext(AuthContext); 
+   const { darkMode } = useContext(ThemeContext);  // detect dark mode
+
+   const textPrimaryClass = darkMode ? 'text-light' : 'text-dark';
+  const textSecondaryClass = darkMode ? 'text-secondary' : 'text-muted';
+
   return (
     <div className="p-3">
       {/* Logged in user info */}
-      <div className="d-flex align-items-center mb-4">
+        <Link to="/profile" className={`text-decoration-none ${textPrimaryClass}`}>
+      <div className="d-flex align-items-center mb-4" style={{ cursor: 'pointer' }}>
         <img
           src="https://i.pravatar.cc/50?img=7"
           alt="profile"
@@ -20,11 +30,12 @@ const RightSidebar = () => {
           width="50"
           height="50"
         />
-        <div>
-          <strong>your_username</strong>
-          <p className="text-muted small mb-0">Your Name</p>
-        </div>
+         <div>
+            <strong className={textPrimaryClass}>{user?.username || 'Guest'}</strong>
+            <p className={`${textSecondaryClass} small mb-0`}>{user?.fullName || ''}</p>
+          </div>
       </div>
+      </Link>
 
       {/* Suggestions */}
       <div className="d-flex justify-content-between mb-2">
@@ -32,18 +43,18 @@ const RightSidebar = () => {
         <a href="/" className="small">See All</a>
       </div>
 
-      {suggestions.map((user, i) => (
+      {suggestions.map((suggestedUser, i) => (
         <div key={i} className="d-flex align-items-center mb-3">
           <img
-            src={user.avatar}
-            alt={user.username}
+            src={suggestedUser.avatar}
+            alt={suggestedUser.username}
             className="rounded-circle me-3"
             width="40"
             height="40"
           />
-          <div className="flex-grow-1">
-            <strong>{user.username}</strong>
-            <p className="text-muted small mb-0">Suggested for you</p>
+              <div className="flex-grow-1">
+            <strong className={textPrimaryClass}>{suggestedUser.username}</strong>
+            <p className={`${textSecondaryClass} small mb-0`}>Suggested for you</p>
           </div>
           <button className="btn btn-link btn-sm text-primary p-0">Follow</button>
         </div>

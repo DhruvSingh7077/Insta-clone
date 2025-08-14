@@ -3,11 +3,15 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import './LeftSidebar.css';
+import { ThemeContext } from "../context/ThemeContext";
+
+
 //import ActivityPanel from './ActivityPanel';
 
 
 const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificationPanel,  onShowReportModal }) => {
   const { user, logout } = useContext(AuthContext);
+   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
@@ -39,21 +43,24 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleDarkMode = () => {
-    document.body.classList.toggle("dark");
-    localStorage.setItem("darkMode", document.body.classList.contains("dark"));
-  };
+  // const toggleDarkMode = () => {
+  //   document.body.classList.toggle("dark");
+  //   localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+  // };
 
-  useEffect(() => {
-    const darkPref = localStorage.getItem("darkMode") === "true";
-    if (darkPref) {
-      document.body.classList.add("dark");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const darkPref = localStorage.getItem("darkMode") === "true";
+  //   if (darkPref) {
+  //     document.body.classList.add("dark");
+  //   }
+  // }, []);
 
   return (
     <div className="d-flex flex-column align-items-start px-3 pt-4" style={{ minHeight: '100vh' }}>
-      <h4 className="mb-4">Instagram</h4>
+    <Link to="/" className="instagram-logo mb-4">
+  Instagram
+   </Link>
+
 
       <ul className="nav flex-column w-100">
         <li className="nav-item mb-3">
@@ -194,7 +201,7 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
                           className="form-check-input"
                           type="checkbox"
                           id="darkModeSwitch"
-                          checked={document.body.classList.contains("dark")}
+                            checked={darkMode} // ✅ from context
                           onChange={toggleDarkMode}
                         />
                       </div>
