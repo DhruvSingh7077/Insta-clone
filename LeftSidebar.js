@@ -6,7 +6,7 @@ import './LeftSidebar.css';
 //import ActivityPanel from './ActivityPanel';
 
 
-const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificationPanel }) => {
+const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificationPanel,  onShowReportModal }) => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
@@ -203,7 +203,14 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
                 )}
               </div>
 
-              <div className="dropdown-item-custom text-white">
+               {/* Report Problem now triggers modal */}
+              <div
+                className="dropdown-item-custom text-white"
+                onClick={() => {
+                  onShowReportModal(); 
+                  setShowMoreDropdown(false);
+                }}
+              >
                 <i className="bi bi-flag me-2"></i> Report a problem
               </div>
               <hr className="bg-secondary my-2" />
