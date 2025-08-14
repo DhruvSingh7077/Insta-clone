@@ -12,6 +12,7 @@ import ProfilePage from './pages/ProfilePage';
 import MainLayout from './components/MainLayout';
 import CreatePost from "./pages/CreatePost";
 import CreateAI from "./pages/CreateAI";
+import MessagesPage from "./components/MessagesPage";
 
 
 function App() {
@@ -71,6 +72,19 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+ {/*  Messages Page */}
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <MessagesPage />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
 
     </Routes>
     </Router>
