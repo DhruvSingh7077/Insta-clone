@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import './LeftSidebar.css';
 import { ThemeContext } from "../context/ThemeContext";
+import ReportProblemModal from "./ReportProblemModal";
 
 
 //import ActivityPanel from './ActivityPanel';
@@ -16,6 +17,7 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
   const [showAppearanceMenu, setShowAppearanceMenu] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   //const [showActivityPanel, setShowActivityPanel] = useState(false);
 
   const moreDropdownRef = useRef();
@@ -214,7 +216,7 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
               <div
                 className="dropdown-item-custom text-white"
                 onClick={() => {
-                  onShowReportModal(); 
+                setShowReportModal(true);
                   setShowMoreDropdown(false);
                 }}
               >
@@ -252,6 +254,11 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
           </>
         )}
       </div>
+
+{/* Report Problem Modal */}
+      {showReportModal && (
+        <ReportProblemModal onClose={() => setShowReportModal(false)} />
+      )}
 
 
     </div>

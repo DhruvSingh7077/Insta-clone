@@ -1,13 +1,19 @@
 import React from "react";
 import "./ReportProblemModal.css";
 
+
 const ReportProblemModal = ({ onClose }) => {
+  // prevent modal click from closing
+  const handleModalClick = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="modal-overlay">
-      <div className="modal">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={handleModalClick}>
         <div className="modal-header">
           <h3>Report a problem</h3>
-          <button className="close-btn" onClick={onClose}>✕</button>
+          
         </div>
         <textarea
           className="modal-textarea"
