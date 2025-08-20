@@ -5,6 +5,8 @@ import { AuthContext } from "../context/AuthContext";
 import './LeftSidebar.css';
 import { ThemeContext } from "../context/ThemeContext";
 import ReportProblemModal from "./ReportProblemModal";
+import SwitchAccountModal from "./SwitchAccountModal";
+
 
 
 //import ActivityPanel from './ActivityPanel';
@@ -18,6 +20,8 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
   const [showAppearanceMenu, setShowAppearanceMenu] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showSwitchAccountModal, setShowSwitchAccountModal] = useState(false);
+
   //const [showActivityPanel, setShowActivityPanel] = useState(false);
 
   const moreDropdownRef = useRef();
@@ -225,8 +229,17 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
               <hr className="bg-secondary my-2" />
               <div className="dropdown-item-custom text-white">
                 <i className="bi bi-chat-dots me-2"></i> Threads
-              </div>
-              <div className="dropdown-item-custom text-white">Switch accounts</div>
+              </div><div
+  className="dropdown-item-custom text-white"
+  onClick={() => {
+    setShowSwitchAccountModal(true);   // <-- open modal
+    setShowMoreDropdown(false);        // <-- close More dropdown
+  }}
+>
+  <i className="bi bi-people me-2"></i> Switch accounts
+</div>
+
+             
               <div
                 className="dropdown-item-custom text-danger"
                 onClick={handleLogout}
@@ -260,6 +273,10 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
         <ReportProblemModal onClose={() => setShowReportModal(false)} />
       )}
 
+
+{showSwitchAccountModal && (
+  <SwitchAccountModal onClose={() => setShowSwitchAccountModal(false)} />
+)}
 
     </div>
   );
