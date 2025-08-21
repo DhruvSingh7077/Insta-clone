@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import LeftSidebar from './LeftSidebar';
 import RightSidebar from './RightSidebar';
 import ActivityPanel from './ActivityPanel';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom'; 
 import SearchPanel from './SearchPanel';
 import NotificationPanel from './NotificationPanel';
 import ReportProblemModal from './ReportProblemModal';
 
 const MainLayout = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();  
   
   const [showActivityPanel, setShowActivityPanel] = useState(false);
    const [showSearchPanel, setShowSearchPanel] = useState(false);
@@ -66,6 +67,26 @@ const MainLayout = ({ children }) => {
       {showReportModal && (
         <ReportProblemModal onClose={() => setShowReportModal(false)} />
       )}
+
+   {/*  Floating Messages Button */}
+      <button
+        onClick={() => navigate("/messages")}
+        className="btn btn-primary rounded-circle shadow-lg"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          width: "60px",
+          height: "60px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "20px"
+        }}
+      >
+        💬
+      </button>
+
     </div>
   );
 };
