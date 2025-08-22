@@ -1,20 +1,22 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useContext, useState, useRef, useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import './LeftSidebar.css';
+import "./LeftSidebar.css";
 import { ThemeContext } from "../context/ThemeContext";
 import ReportProblemModal from "./ReportProblemModal";
 import SwitchAccountModal from "./SwitchAccountModal";
 
-
-
 //import ActivityPanel from './ActivityPanel';
 
-
-const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificationPanel,  onShowReportModal }) => {
+const LeftSidebar = ({
+  onShowActivityPanel,
+  onShowSearchPanel,
+  onShowNotificationPanel,
+  onShowReportModal,
+}) => {
   const { user, logout } = useContext(AuthContext);
-   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
@@ -62,15 +64,20 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
   // }, []);
 
   return (
-    <div className="d-flex flex-column align-items-start px-3 pt-4" style={{ minHeight: '100vh' }}>
-    <Link to="/" className="instagram-logo mb-4">
-  Instagram
-   </Link>
-
+    <div
+      className="d-flex flex-column align-items-start px-3 pt-4"
+      style={{ minHeight: "100vh" }}
+    >
+      <Link to="/" className="instagram-logo mb-4">
+        Instagram
+      </Link>
 
       <ul className="nav flex-column w-100">
         <li className="nav-item mb-3">
-          <Link to="/" className="nav-link text-white d-flex align-items-center">
+          <Link
+            to="/"
+            className="nav-link text-white d-flex align-items-center"
+          >
             <i className="bi bi-house-door me-3"></i> Home
           </Link>
         </li>
@@ -88,38 +95,46 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
         </li>
 
         <li className="nav-item mb-3">
-          <Link to="/explore" className="nav-link text-white d-flex align-items-center">
+          <Link
+            to="/explore"
+            className="nav-link text-white d-flex align-items-center"
+          >
             <i className="bi bi-compass me-3"></i> Explore
           </Link>
         </li>
 
         <li className="nav-item mb-3">
-          <Link to="/reels" className="nav-link text-white d-flex align-items-center">
+          <Link
+            to="/reels"
+            className="nav-link text-white d-flex align-items-center"
+          >
             <i className="bi bi-camera-reels me-3"></i> Reels
           </Link>
         </li>
 
         <li className="nav-item mb-3">
-          <Link to="/messages" className="nav-link text-white d-flex align-items-center">
+          <Link
+            to="/messages"
+            className="nav-link text-white d-flex align-items-center"
+          >
             <i className="bi bi-chat me-3"></i> Messages
           </Link>
         </li>
 
         <li className="nav-item mb-3">
-  <button
-    className="nav-link text-white d-flex align-items-center bg-transparent border-0"
-    onClick={() => onShowNotificationPanel()}
-  >
-    <i className="bi bi-heart me-3"></i> Notifications
-  </button>
-</li>
-
+          <button
+            className="nav-link text-white d-flex align-items-center bg-transparent border-0"
+            onClick={() => onShowNotificationPanel()}
+          >
+            <i className="bi bi-heart me-3"></i> Notifications
+          </button>
+        </li>
 
         {/* Create Dropdown */}
         <li className="nav-item mb-3 position-relative" ref={createDropdownRef}>
           <button
             className="nav-link text-white d-flex align-items-center bg-transparent border-0 w-100"
-            onClick={() => setShowCreateDropdown(prev => !prev)}
+            onClick={() => setShowCreateDropdown((prev) => !prev)}
           >
             <i className="bi bi-plus-square me-3"></i> Create
           </button>
@@ -145,17 +160,23 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
         </li>
 
         <li className="nav-item mb-3">
-          <Link to="/profile" className="nav-link text-white d-flex align-items-center">
+          <Link
+            to="/profile"
+            className="nav-link text-white d-flex align-items-center"
+          >
             <i className="bi bi-person me-3"></i> Profile
           </Link>
         </li>
 
         {/* More Dropdown */}
-        <li className="nav-item mt-auto position-relative" ref={moreDropdownRef}>
+        <li
+          className="nav-item mt-auto position-relative"
+          ref={moreDropdownRef}
+        >
           <button
             className="nav-link text-white d-flex align-items-center bg-transparent border-0"
             onClick={() => {
-              setShowMoreDropdown(prev => !prev);
+              setShowMoreDropdown((prev) => !prev);
               setShowAppearanceMenu(false);
             }}
           >
@@ -167,8 +188,8 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
               <div className="dropdown-item-custom text-white">
                 <i className="bi bi-gear me-2"></i> Settings
               </div>
- <div
-                   className="dropdown-item-custom text-white"
+              <div
+                className="dropdown-item-custom text-white"
                 onClick={() => {
                   onShowActivityPanel(); // 🔹 Call parent to show ActivityPanel
                   setShowMoreDropdown(false);
@@ -177,15 +198,20 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
                 <i className="bi bi-clock-history me-2"></i> Your activity
               </div>
 
-              <div className="dropdown-item-custom text-white">
+              {/*  Updated Saved link */}
+              <Link
+                to="/saved"
+                className="dropdown-item-custom text-white d-flex align-items-center"
+                onClick={() => setShowMoreDropdown(false)}
+              >
                 <i className="bi bi-bookmark me-2"></i> Saved
-              </div>
+              </Link>
 
               {/* Switch Appearance Item with Submenu */}
               <div className="position-relative">
                 <div
                   className="dropdown-item-custom text-white"
-                  onClick={() => setShowAppearanceMenu(prev => !prev)}
+                  onClick={() => setShowAppearanceMenu((prev) => !prev)}
                 >
                   <i className="bi bi-moon me-2"></i> Switch appearance
                 </div>
@@ -207,7 +233,7 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
                           className="form-check-input"
                           type="checkbox"
                           id="darkModeSwitch"
-                            checked={darkMode} // ✅ from context
+                          checked={darkMode} // ✅ from context
                           onChange={toggleDarkMode}
                         />
                       </div>
@@ -216,11 +242,11 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
                 )}
               </div>
 
-               {/* Report Problem now triggers modal */}
+              {/* Report Problem now triggers modal */}
               <div
                 className="dropdown-item-custom text-white"
                 onClick={() => {
-                setShowReportModal(true);
+                  setShowReportModal(true);
                   setShowMoreDropdown(false);
                 }}
               >
@@ -229,17 +255,17 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
               <hr className="bg-secondary my-2" />
               <div className="dropdown-item-custom text-white">
                 <i className="bi bi-chat-dots me-2"></i> Threads
-              </div><div
-  className="dropdown-item-custom text-white"
-  onClick={() => {
-    setShowSwitchAccountModal(true);   // <-- open modal
-    setShowMoreDropdown(false);        // <-- close More dropdown
-  }}
->
-  <i className="bi bi-people me-2"></i> Switch accounts
-</div>
+              </div>
+              <div
+                className="dropdown-item-custom text-white"
+                onClick={() => {
+                  setShowSwitchAccountModal(true); // <-- open modal
+                  setShowMoreDropdown(false); // <-- close More dropdown
+                }}
+              >
+                <i className="bi bi-people me-2"></i> Switch accounts
+              </div>
 
-             
               <div
                 className="dropdown-item-custom text-danger"
                 onClick={handleLogout}
@@ -262,22 +288,25 @@ const LeftSidebar = ({ onShowActivityPanel, onShowSearchPanel, onShowNotificatio
           </>
         ) : (
           <>
-            <Link to="/login" className="text-white me-2">Sign In</Link> |{" "}
-            <Link to="/register" className="text-white ms-2">Register</Link>
+            <Link to="/login" className="text-white me-2">
+              Sign In
+            </Link>{" "}
+            |{" "}
+            <Link to="/register" className="text-white ms-2">
+              Register
+            </Link>
           </>
         )}
       </div>
 
-{/* Report Problem Modal */}
+      {/* Report Problem Modal */}
       {showReportModal && (
         <ReportProblemModal onClose={() => setShowReportModal(false)} />
       )}
 
-
-{showSwitchAccountModal && (
-  <SwitchAccountModal onClose={() => setShowSwitchAccountModal(false)} />
-)}
-
+      {showSwitchAccountModal && (
+        <SwitchAccountModal onClose={() => setShowSwitchAccountModal(false)} />
+      )}
     </div>
   );
 };
