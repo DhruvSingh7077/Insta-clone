@@ -185,9 +185,14 @@ const LeftSidebar = ({
 
           {showMoreDropdown && (
             <div className="bg-dark text-white rounded p-2 position-absolute sidebar-dropdown">
-              <div className="dropdown-item-custom text-white">
+              {/*  Made Settings a link */}
+              <Link
+                to="/settings"
+                className="dropdown-item-custom text-white d-flex align-items-center"
+                onClick={() => setShowMoreDropdown(false)} // closes dropdown after click
+              >
                 <i className="bi bi-gear me-2"></i> Settings
-              </div>
+              </Link>
               <div
                 className="dropdown-item-custom text-white"
                 onClick={() => {
