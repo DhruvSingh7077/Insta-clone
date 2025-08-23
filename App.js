@@ -17,6 +17,8 @@ import MainLayout from "./components/MainLayout";
 import CreatePost from "./pages/CreatePost";
 import CreateAI from "./pages/CreateAI";
 import MessagesPage from "./components/MessagesPage";
+import SettingsPage from "./pages/SettingsPage";
+
 //import SavedPage from "./pages/SavedPage";
 import { ThemeProvider } from "./context/ThemeContext";
 
@@ -89,6 +91,16 @@ function App() {
               <ProtectedRoute>
                 <MainLayout>
                   <MessagesPage />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <SettingsPage />
                 </MainLayout>
               </ProtectedRoute>
             }
