@@ -71,7 +71,6 @@ const LeftSidebar = ({
       <Link to="/" className="instagram-logo mb-4">
         Instagram
       </Link>
-
       <ul className="nav flex-column w-100">
         <li className="nav-item mb-3">
           <Link
@@ -281,8 +280,7 @@ const LeftSidebar = ({
           )}
         </li>
       </ul>
-
-      {/* Auth Info */}
+      {/* Auth Info
       <div style={{ marginTop: "20px" }}>
         {user ? (
           <>
@@ -302,13 +300,11 @@ const LeftSidebar = ({
             </Link>
           </>
         )}
-      </div>
-
+      </div> */}
       {/* Report Problem Modal */}
       {showReportModal && (
         <ReportProblemModal onClose={() => setShowReportModal(false)} />
       )}
-
       {showSwitchAccountModal && (
         <SwitchAccountModal onClose={() => setShowSwitchAccountModal(false)} />
       )}
