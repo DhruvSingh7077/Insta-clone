@@ -26,6 +26,8 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
+        {/*  Mount CreatePost globally so modal works everywhere */}
+        <CreatePost />
         <Routes>
           {/* Route for Login Page */}
           <Route path="/login" element={<Login />} />
