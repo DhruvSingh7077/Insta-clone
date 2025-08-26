@@ -6,6 +6,7 @@ import "./LeftSidebar.css";
 import { ThemeContext } from "../context/ThemeContext";
 import ReportProblemModal from "./ReportProblemModal";
 import SwitchAccountModal from "./SwitchAccountModal";
+import CreatePost from "../pages/CreatePost";
 
 //import ActivityPanel from './ActivityPanel';
 
@@ -18,6 +19,8 @@ const LeftSidebar = ({
   const { user, logout } = useContext(AuthContext);
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
   const [showAppearanceMenu, setShowAppearanceMenu] = useState(false);
@@ -140,13 +143,15 @@ const LeftSidebar = ({
 
           {showCreateDropdown && (
             <div className="bg-dark text-white rounded p-2 position-absolute start-100 top-0 ms-2 shadow">
-              <Link
-                to="/create/post"
-                className="dropdown-item-custom text-white d-flex align-items-center"
-                onClick={() => setShowCreateDropdown(false)}
+              <button
+                className="dropdown-item-custom text-white d-flex align-items-center bg-transparent border-0 w-100 text-start"
+                onClick={() => {
+                  setShowCreateDropdown(false);
+                  setShowModal(true); // trigger modal
+                }}
               >
                 <i className="bi bi-images me-2"></i> Post
-              </Link>
+              </button>
               <Link
                 to="/create/ai"
                 className="dropdown-item-custom text-white d-flex align-items-center"
@@ -301,7 +306,13 @@ const LeftSidebar = ({
           </>
         )}
       </div> */}
+
       {/* Report Problem Modal */}
+
+      {showModal && (
+        <CreatePost showModal={showModal} setShowModal={setShowModal} />
+      )}
+
       {showReportModal && (
         <ReportProblemModal onClose={() => setShowReportModal(false)} />
       )}
