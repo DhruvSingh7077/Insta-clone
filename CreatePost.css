@@ -1,0 +1,39 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.modal-container {
+  background: #262626;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90%;
+  overflow: hidden;
+  color: white;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #444;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.upload-box {
+  border: 2px dashed #555;
+  padding: 40px;
+  border-radius: 12px;
+}
