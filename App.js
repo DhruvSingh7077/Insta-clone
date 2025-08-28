@@ -1,5 +1,6 @@
 import "./App.css";
-import React from "react";
+
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -23,11 +24,32 @@ import SettingsPage from "./pages/SettingsPage";
 import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
+  // 🔹 Shared posts state
+  const [posts, setPosts] = useState([]);
+
+  // Load posts from localStorage on first render
+  useEffect(() => {
+    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+    setPosts(savedPosts);
+  }, []);
+
+  // Save posts to localStorage whenever they change
+  useEffect(() => {
+    console.log("Posts updated:", posts);
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts]);
+
+  // Function to add a new post
+  const handleAddPost = (newPost) => {
+    console.log("Adding new post:", newPost);
+    setPosts([newPost, ...posts]); // add newest first
+  };
+
   return (
     <ThemeProvider>
       <Router>
         {/*  Mount CreatePost globally so modal works everywhere */}
-        <CreatePost />
+        {/* <CreatePost /> */}
         <Routes>
           {/* Route for Login Page */}
           <Route path="/login" element={<Login />} />
@@ -53,7 +75,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout>
-                  <ProfilePage />
+                  <ProfilePage posts={posts} />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -68,7 +90,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout>
-                  <CreatePost />
+                  <CreatePost onPost={handleAddPost} />
                 </MainLayout>
               </ProtectedRoute>
             }
