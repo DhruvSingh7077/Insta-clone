@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./CreatePost.css";
 
-const CreatePost = ({ showModal, setShowModal }) => {
+const CreatePost = ({ showModal, setShowModal, onPost }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [caption, setCaption] = useState("");
@@ -28,19 +28,29 @@ const CreatePost = ({ showModal, setShowModal }) => {
       alert("Please select a file before posting.");
       return;
     }
-    console.log("Posting:", {
-      file: selectedFile,
-      caption: caption,
-    });
 
-    // Reset
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setCaption("");
-    setShowModal(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    // Convert file → base64 string (so we can save to localStorage)
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const newPost = {
+        id: Date.now(),
+        imageUrl: reader.result, // base64 string
+        caption,
+        createdAt: new Date().toISOString(),
+      };
+
+      //  Call onPost (from App.js)
+      if (onPost) onPost(newPost);
+      // Reset
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      setCaption("");
+      setShowModal(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    };
+    reader.readAsDataURL(selectedFile);
   };
 
   return (

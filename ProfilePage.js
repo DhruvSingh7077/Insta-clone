@@ -1,13 +1,11 @@
 // src/pages/ProfilePage.js
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-//import Button from 'react-bootstrap/Button';
-//import "./ProfilePage.css"; // Optional: for your own styles
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-
-const ProfilePage = () => {
+const ProfilePage = ({ posts = [] }) => {
+  console.log("ProfilePage posts:", posts);
   const { user } = useContext(AuthContext);
 
   return (
@@ -27,17 +25,27 @@ const ProfilePage = () => {
         <div>
           <h4 className="mb-2">{user?.username || "username"}</h4>
           <div className="d-flex gap-2 mb-2">
-            <button className="btn btn-outline-secondary btn-sm">Edit profile</button>
-            <button className="btn btn-outline-secondary btn-sm">View archive</button>
+            <button className="btn btn-outline-secondary btn-sm">
+              Edit profile
+            </button>
+            <button className="btn btn-outline-secondary btn-sm">
+              View archive
+            </button>
             <button className="btn btn-outline-secondary btn-sm">
               <i className="bi bi-gear"></i>
             </button>
           </div>
 
           <div className="d-flex gap-4">
-            <span><strong>0</strong> posts</span>
-            <span><strong>0</strong> followers</span>
-            <span><strong>6</strong> following</span>
+            <span>
+              <strong>{posts.length}</strong> posts
+            </span>
+            <span>
+              <strong>0</strong> followers
+            </span>
+            <span>
+              <strong>6</strong> following
+            </span>
           </div>
 
           <div className="mt-2">{user?.email || "mahendra@@"}</div>
@@ -70,20 +78,51 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {/* Empty Feed Message */}
-      <div className="text-center mt-5">
-        <div
-          className="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
-          style={{ width: "60px", height: "60px", backgroundColor: "#efefef" }}
-        >
-          <i className="bi bi-camera fs-4"></i>
+      {/* Posts Section */}
+      {posts.length === 0 ? (
+        // Empty Feed Message
+        <div className="text-center mt-5">
+          <div
+            className="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+            style={{
+              width: "60px",
+              height: "60px",
+              backgroundColor: "#efefef",
+            }}
+          >
+            <i className="bi bi-camera fs-4"></i>
+          </div>
+          <h5>Share Photos</h5>
+          <p>No posts yet.</p>
         </div>
-        <h5>Share Photos</h5>
-      </div>
+      ) : (
+        // Grid of posts
+        <div
+          className="mt-4"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "10px",
+          }}
+        >
+          {posts.map((post) => (
+            <div key={post.id} style={{ border: "1px solid #ddd" }}>
+              {post.imageUrl && (
+                <img
+                  src={post.imageUrl}
+                  alt="post"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              )}
+              <p className="p-2">{post.caption}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Floating Message Button */}
       <div className="position-fixed bottom-0 end-0 m-4">
-       <button className="btn btn-light shadow d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
+        <button className="btn btn-light shadow d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
           <i className="bi bi-messenger"></i> Messages
         </button>
       </div>
