@@ -1,19 +1,27 @@
 // src/pages/ProfilePage.js
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const ProfilePage = ({ posts = [] }) => {
-  console.log("ProfilePage posts:", posts);
   const { user } = useContext(AuthContext);
+  console.log("ProfilePage posts:", posts);
+  const [userPosts, setUserPosts] = useState([]);
 
-  // Filter posts belonging to the logged-in user
+  useEffect(() => {
+    // ✅ Get posts from localStorage
+    const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
 
-  const userPosts = posts.filter(
-    (post) => post.userId === user?._id || post.userId === user?.id
-  );
+    // ✅ Use posts from props (App.js) + saved ones
+    const allPosts = posts.length > 0 ? posts : savedPosts;
 
+    // ✅ Filter only current user's posts
+    const filtered = allPosts.filter(
+      (post) => post.userId === user?._id || post.userId === user?.id
+    );
+    setUserPosts(filtered);
+  }, [posts, user]);
   return (
     <div className="container text-dark pt-4 profile-page">
       {/* Top Section */}

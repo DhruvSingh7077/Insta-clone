@@ -34,17 +34,26 @@ const CreatePost = ({ showModal, setShowModal, onPost }) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user._id) {
+        alert("Please log in to create a post.");
+        return;
+      }
       const newPost = {
         id: Date.now(),
         imageUrl: reader.result, // base64 string
         caption,
         createdAt: new Date().toISOString(),
-        userId: user?._id || "guest",
-        username: user?.username || "Guest",
-        avatar: user?.avatar || "/default-avatar.png",
+        userId: user._id, // ✅ properly tie post to logged-in user
+        username: user.username,
+        avatar: user.profilePic || "/default-avatar.png",
       };
 
       if (onPost) onPost(newPost);
+
+      // ✅ Also save to localStorage for persistence
+      const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+      savedPosts.push(newPost);
+      localStorage.setItem("posts", JSON.stringify(savedPosts));
 
       // Reset state + close modal
       handleRemoveFile();
