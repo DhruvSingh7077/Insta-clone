@@ -1,5 +1,5 @@
+// src/App.js
 import "./App.css";
-
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -7,11 +7,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-//import LeftSidebar from './components/LeftSidebar';
+
 import Feed from "./components/Feed";
 import Login from "./components/Login";
 import Register from "./components/Register";
-//import RightSidebar from './components/RightSidebar';
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProfilePage from "./pages/ProfilePage";
 import MainLayout from "./components/MainLayout";
@@ -19,13 +18,12 @@ import CreatePost from "./pages/CreatePost";
 import CreateAI from "./pages/CreateAI";
 import MessagesPage from "./components/MessagesPage";
 import SettingsPage from "./pages/SettingsPage";
-
-//import SavedPage from "./pages/SavedPage";
 import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   // 🔹 Shared posts state
   const [posts, setPosts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   // Load posts from localStorage on first render
   useEffect(() => {
@@ -41,41 +39,56 @@ function App() {
 
   // Function to add a new post
   const handleAddPost = (newPost) => {
-    console.log("Adding new post:", newPost);
-    setPosts([newPost, ...posts]); // add newest first
+    const postWithUser = {
+      id: Date.now(), // unique ID
+      ...newPost, // already contains userId, caption, imageUrl, etc.
+    };
+
+    console.log("Adding new post:", postWithUser);
+
+    setPosts((prevPosts) => {
+      const updatedPosts = [postWithUser, ...prevPosts];
+      localStorage.setItem("posts", JSON.stringify(updatedPosts)); // ✅ persist immediately
+      return updatedPosts;
+    });
   };
 
   return (
     <ThemeProvider>
       <Router>
-        {/*  Mount CreatePost globally so modal works everywhere */}
-        {/* <CreatePost /> */}
+        {/* 🔹 Mount CreatePost globally so it's available everywhere */}
+        <CreatePost
+          showModal={showModal}
+          setShowModal={setShowModal}
+          onPost={handleAddPost}
+        />
         <Routes>
-          {/* Route for Login Page */}
+          {/* Login */}
           <Route path="/login" element={<Login />} />
 
-          {/* Route for Register Page */}
+          {/* Register */}
           <Route path="/register" element={<Register />} />
 
-          {/* Home Route (Feed + Layout) */}
+          {/* Home / Feed */}
           <Route
             path="/"
             element={
               <ProtectedRoute>
                 <MainLayout>
-                  <Feed />
+                  <Feed posts={posts} />
                 </MainLayout>
               </ProtectedRoute>
             }
           />
 
-          {/* ✅ Profile Page Route */}
+          {/* Profile */}
           <Route
             path="/profile"
             element={
               <ProtectedRoute>
                 <MainLayout>
-                  <ProfilePage posts={posts} />
+                  {/* 🔹 Pass setShowModal so + New button can open CreatePost */}
+                  <ProfilePage posts={posts} setShowModal={setShowModal} />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -84,19 +97,7 @@ function App() {
           {/* Saved → Redirect to Profile */}
           <Route path="/saved" element={<Navigate to="/profile" replace />} />
 
-          {/* Create Post Route */}
-          <Route
-            path="/create/post"
-            element={
-              <ProtectedRoute>
-                <MainLayout>
-                  <CreatePost onPost={handleAddPost} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Create AI Post Route */}
+          {/* Create AI Post */}
           <Route
             path="/create/ai"
             element={
@@ -108,7 +109,7 @@ function App() {
             }
           />
 
-          {/*  Messages Page */}
+          {/* Messages */}
           <Route
             path="/messages"
             element={
@@ -119,6 +120,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Settings */}
           <Route
             path="/settings"
             element={

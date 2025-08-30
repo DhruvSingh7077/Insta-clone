@@ -1,3 +1,4 @@
+// src/pages/CreatePost.js
 import React, { useRef, useState } from "react";
 import "./CreatePost.css";
 
@@ -18,6 +19,7 @@ const CreatePost = ({ showModal, setShowModal, onPost }) => {
   const handleRemoveFile = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
+    setCaption("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -29,103 +31,96 @@ const CreatePost = ({ showModal, setShowModal, onPost }) => {
       return;
     }
 
-    // Convert file → base64 string (so we can save to localStorage)
     const reader = new FileReader();
     reader.onloadend = () => {
+      const user = JSON.parse(localStorage.getItem("user"));
       const newPost = {
         id: Date.now(),
         imageUrl: reader.result, // base64 string
         caption,
         createdAt: new Date().toISOString(),
+        userId: user?._id || "guest",
+        username: user?.username || "Guest",
+        avatar: user?.avatar || "/default-avatar.png",
       };
 
-      //  Call onPost (from App.js)
       if (onPost) onPost(newPost);
-      // Reset
-      setSelectedFile(null);
-      setPreviewUrl(null);
-      setCaption("");
+
+      // Reset state + close modal
+      handleRemoveFile();
       setShowModal(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     };
     reader.readAsDataURL(selectedFile);
   };
 
+  if (!showModal) return null; // don't render unless modal is open
+
   return (
-    <>
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h5>Create new post</h5>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        {/* Header */}
+        <div className="modal-header d-flex justify-content-between align-items-center">
+          <h5 className="mb-0">Create new post</h5>
+          <button
+            className="btn-close"
+            onClick={() => {
+              handleRemoveFile();
+              setShowModal(false);
+            }}
+          />
+        </div>
+
+        {/* Body */}
+        <div className="modal-body text-center">
+          {!previewUrl ? (
+            <div className="upload-box">
+              <i className="bi bi-images" style={{ fontSize: "3rem" }}></i>
+              <p>Drag photos and videos here</p>
               <button
-                className="btn-close"
-                onClick={() => setShowModal(false)}
+                className="btn btn-primary"
+                onClick={() => fileInputRef.current.click()}
+              >
+                Select from computer
+              </button>
+              <input
+                type="file"
+                accept="image/*,video/*"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
               />
             </div>
-
-            <div className="modal-body text-center">
-              {!previewUrl ? (
-                <div className="upload-box">
-                  <i className="bi bi-images" style={{ fontSize: "3rem" }}></i>
-                  <p>Drag photos and videos here</p>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => fileInputRef.current.click()}
-                  >
-                    Select from computer
-                  </button>
-                  <input
-                    type="file"
-                    accept="image/*,video/*"
-                    ref={fileInputRef}
-                    style={{ display: "none" }}
-                    onChange={handleFileChange}
-                  />
-                </div>
+          ) : (
+            <div className="preview-section">
+              {selectedFile.type.startsWith("image/") ? (
+                <img src={previewUrl} alt="preview" className="preview-image" />
               ) : (
-                <div className="preview-section">
-                  {selectedFile.type.startsWith("image/") ? (
-                    <img
-                      src={previewUrl}
-                      alt="preview"
-                      className="preview-image"
-                    />
-                  ) : (
-                    <video
-                      src={previewUrl}
-                      controls
-                      className="preview-video"
-                    />
-                  )}
-
-                  <textarea
-                    className="caption-input"
-                    placeholder="Write a caption..."
-                    value={caption}
-                    onChange={(e) => setCaption(e.target.value)}
-                  />
-
-                  <div className="d-flex justify-content-between mt-3">
-                    <button
-                      className="btn btn-outline-danger"
-                      onClick={handleRemoveFile}
-                    >
-                      Remove
-                    </button>
-                    <button className="btn btn-success" onClick={handlePost}>
-                      Post
-                    </button>
-                  </div>
-                </div>
+                <video src={previewUrl} controls className="preview-video" />
               )}
+
+              <textarea
+                className="caption-input"
+                placeholder="Write a caption..."
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
+              />
+
+              <div className="d-flex justify-content-between mt-3">
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={handleRemoveFile}
+                >
+                  Remove
+                </button>
+                <button className="btn btn-success" onClick={handlePost}>
+                  Post
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 
