@@ -52,9 +52,10 @@ const CreatePost = ({ showModal, setShowModal, onPost }) => {
 
       // ✅ Also save to localStorage for persistence
       const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-      savedPosts.push(newPost);
-      localStorage.setItem("posts", JSON.stringify(savedPosts));
-
+      // savedPosts.push(newPost);
+      // localStorage.setItem("posts", JSON.stringify(savedPosts));
+      const updatedPosts = [newPost, ...savedPosts];
+      localStorage.setItem("posts", JSON.stringify(updatedPosts));
       // Reset state + close modal
       handleRemoveFile();
       setShowModal(false);
